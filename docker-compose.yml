@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+  server:
+    build: server
+    ports:
+      - '5001:5001'
+    volumes:
+      - ./server:/server
+    env_file:
+      - ./server/.env
+    command: flask run -h 0.0.0.0 -p 5001 --debug
+
+  db:
+    image: postgres:9.6-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=flask_db
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres_data:
